@@ -1,5 +1,5 @@
 "use client";
-import Card from '@/src/components/ui/Card';
+import { Card } from '@/src/components/ui/card';
 import { useAppSelector } from '@/src/store/hooks';
 
 function escapeHtml(str: string) {
