@@ -1,7 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { EditorDoc, EditorStatus } from '@/src/types/editor';
 
-const initialState: EditorDoc = {
+export interface EditorState extends EditorDoc {
+  lastSavedAt?: number;
+}
+
+const initialState: EditorState = {
   slug: '',
   title: '',
   body: '',
@@ -13,6 +17,9 @@ const editorSlice = createSlice({
   name: 'editor',
   initialState,
   reducers: {
+    hydrate(_state, action: PayloadAction<EditorState>) {
+      return action.payload;
+    },
     setTitle(state, action: PayloadAction<string>) {
       state.title = action.payload;
     },
@@ -43,6 +50,9 @@ const editorSlice = createSlice({
     setCover(state, action: PayloadAction<string | undefined>) {
       state.meta.coverImage = action.payload;
     },
+    setLastSavedAt(state, action: PayloadAction<number | undefined>) {
+      state.lastSavedAt = action.payload;
+    },
     reset(state) {
       Object.assign(state, initialState);
     }
@@ -50,6 +60,7 @@ const editorSlice = createSlice({
 });
 
 export const {
+  hydrate,
   setTitle,
   setSlug,
   setBody,
@@ -60,8 +71,8 @@ export const {
   addCategory,
   removeCategory,
   setCover,
+  setLastSavedAt,
   reset
 } = editorSlice.actions;
 
 export default editorSlice.reducer;
-

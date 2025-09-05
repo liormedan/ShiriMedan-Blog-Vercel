@@ -2,6 +2,7 @@
 import { useAppDispatch, useAppSelector } from '@/src/store/hooks';
 import { addTag, removeTag, addCategory, removeCategory, setExcerpt } from '@/src/store/slices/editorSlice';
 import { useState } from 'react';
+import ColorPalette from './ColorPalette';
 
 export default function Sidebar() {
   const dispatch = useAppDispatch();
@@ -10,48 +11,53 @@ export default function Sidebar() {
   const [catInput, setCatInput] = useState('');
 
   return (
-    <div className="card" aria-label="מאפייני פוסט">
-      <h3 style={{ marginTop: 0 }}>מאפיינים</h3>
+    <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-sm" aria-label="מאפייני פוסט">
+      <h3 className="text-base font-semibold mb-2">מאפיינים</h3>
 
-      <section style={{ marginBottom: 12 }}>
-        <label className="muted">תקציר</label>
+      <section className="mb-3">
+        <label className="block text-sm text-gray-600 mb-1">תקציר</label>
         <textarea
           value={meta.excerpt || ''}
           onChange={(e) => dispatch(setExcerpt(e.target.value))}
-          style={{ width: '100%', minHeight: 80, padding: 6 }}
+          className="w-full min-h-24 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
         />
       </section>
 
-      <section style={{ marginBottom: 12 }}>
-        <label className="muted">תגיות</label>
-        <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
-          <input value={tagInput} onChange={(e) => setTagInput(e.target.value)} style={{ flex: 1, padding: 6 }} />
-          <button onClick={() => { if (tagInput.trim()) { dispatch(addTag(tagInput.trim())); setTagInput(''); } }}>הוסף</button>
+      <section className="mb-3">
+        <label className="block text-sm text-gray-600">תגיות</label>
+        <div className="flex gap-2 mt-1">
+          <input value={tagInput} onChange={(e) => setTagInput(e.target.value)} className="flex-1 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm" />
+          <button className="rounded border px-2" onClick={() => { if (tagInput.trim()) { dispatch(addTag(tagInput.trim())); setTagInput(''); } }}>הוסף</button>
         </div>
-        <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+        <div className="mt-2 flex flex-wrap gap-2">
           {meta.tags.map((t) => (
-            <span key={t} className="card" style={{ padding: '2px 6px' }}>
-              {t} <button onClick={() => dispatch(removeTag(t))} aria-label={`הסר תגית ${t}`}>×</button>
+            <span key={t} className="inline-flex items-center gap-1 rounded border px-2 py-1 text-sm">
+              {t}
+              <button className="text-gray-500" onClick={() => dispatch(removeTag(t))} aria-label={`הסר תגית ${t}`}>×</button>
+            </span>
+          ))}
+        </div>
+      </section>
+
+      <section className="mb-3">
+        <label className="block text-sm text-gray-600">קטגוריות</label>
+        <div className="flex gap-2 mt-1">
+          <input value={catInput} onChange={(e) => setCatInput(e.target.value)} className="flex-1 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm" />
+          <button className="rounded border px-2" onClick={() => { if (catInput.trim()) { dispatch(addCategory(catInput.trim())); setCatInput(''); } }}>הוסף</button>
+        </div>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {meta.categories.map((c) => (
+            <span key={c} className="inline-flex items-center gap-1 rounded border px-2 py-1 text-sm">
+              {c}
+              <button className="text-gray-500" onClick={() => dispatch(removeCategory(c))} aria-label={`הסר קטגוריה ${c}`}>×</button>
             </span>
           ))}
         </div>
       </section>
 
       <section>
-        <label className="muted">קטגוריות</label>
-        <div style={{ display: 'flex', gap: 6, marginTop: 4 }}>
-          <input value={catInput} onChange={(e) => setCatInput(e.target.value)} style={{ flex: 1, padding: 6 }} />
-          <button onClick={() => { if (catInput.trim()) { dispatch(addCategory(catInput.trim())); setCatInput(''); } }}>הוסף</button>
-        </div>
-        <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {meta.categories.map((c) => (
-            <span key={c} className="card" style={{ padding: '2px 6px' }}>
-              {c} <button onClick={() => dispatch(removeCategory(c))} aria-label={`הסר קטגוריה ${c}`}>×</button>
-            </span>
-          ))}
-        </div>
+        <ColorPalette />
       </section>
     </div>
   );
 }
-
