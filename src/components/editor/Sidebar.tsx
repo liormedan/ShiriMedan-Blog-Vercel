@@ -6,11 +6,24 @@ import { useState } from 'react';
 export default function Sidebar() {
   const dispatch = useAppDispatch();
   const meta = useAppSelector((s) => s.editor.meta);
+  const slug = useAppSelector((s) => s.editor.slug);
   const [tagInput, setTagInput] = useState('');
   const [catInput, setCatInput] = useState('');
 
   return (
     <div className="card" aria-label="מאפייני פוסט">
+      <nav style={{ marginBottom: 12 }}>
+        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <li>
+            <a href="/blog">כל הפוסטים</a>
+          </li>
+          {slug && (
+            <li>
+              <a href={`/blog/${slug}`}>הצג פוסט</a>
+            </li>
+          )}
+        </ul>
+      </nav>
       <h3 style={{ marginTop: 0 }}>מאפיינים</h3>
 
       <section style={{ marginBottom: 12 }}>

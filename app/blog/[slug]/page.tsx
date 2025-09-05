@@ -1,0 +1,31 @@
+interface Post {
+  id: number;
+  title: string;
+  body: string;
+}
+
+async function getPost(id: string): Promise<Post> {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
+  return res.json();
+}
+
+function markdownToHtml(md: string) {
+  return md
+    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+    .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+    .replace(/\n/gim, '<br />');
+}
+
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+  const post = await getPost(params.slug);
+  return (
+    <main className="container">
+      <h1>{post.title}</h1>
+      <article dangerouslySetInnerHTML={{ __html: markdownToHtml(post.body) }} />
+    </main>
+  );
+}
+

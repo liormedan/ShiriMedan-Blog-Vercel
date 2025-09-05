@@ -8,6 +8,11 @@ export default function HomePage() {
       <ul>
         <li>
           <Button asChild>
+            <a href="/blog">צפה בבלוג</a>
+          </Button>
+        </li>
+        <li>
+          <Button asChild>
             <a href="/editor">עבור לעורך</a>
           </Button>
         </li>
