@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import '@radix-ui/themes/styles.css';
 import { Providers } from '@/src/providers/ReduxProvider';
 
 export const metadata: Metadata = {
