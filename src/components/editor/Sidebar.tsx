@@ -7,11 +7,24 @@ import ColorPalette from './ColorPalette';
 export default function Sidebar() {
   const dispatch = useAppDispatch();
   const meta = useAppSelector((s) => s.editor.meta);
+  const slug = useAppSelector((s) => s.editor.slug);
   const [tagInput, setTagInput] = useState('');
   const [catInput, setCatInput] = useState('');
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-sm" aria-label="מאפייני פוסט">
+      <nav className="mb-3 text-sm">
+        <ul className="flex flex-col gap-1">
+          <li>
+            <a href="/blog" className="text-brand-primary hover:underline">צפה בבלוג</a>
+          </li>
+          {slug && (
+            <li>
+              <a href={`/blog/${slug}`} className="hover:underline">צפה בפוסט</a>
+            </li>
+          )}
+        </ul>
+      </nav>
       <h3 className="text-base font-semibold mb-2">מאפיינים</h3>
 
       <section className="mb-3">
@@ -61,3 +74,4 @@ export default function Sidebar() {
     </div>
   );
 }
+
