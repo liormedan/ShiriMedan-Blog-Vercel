@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+
 interface Post {
   id: number;
   title: string;
@@ -7,6 +9,28 @@ interface Post {
 async function getPost(id: string): Promise<Post> {
   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
   return res.json();
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const post = await getPost(params.slug);
+  const description = post.body.slice(0, 160);
+  return {
+    title: post.title,
+    description,
+    openGraph: {
+      title: post.title,
+      description,
+      images: [
+        {
+          url: `https://via.placeholder.com/1200x630.png?text=${encodeURIComponent(post.title)}`,
+        },
+      ],
+    },
+  };
 }
 
 function markdownToHtml(md: string) {
