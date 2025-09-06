@@ -1,6 +1,8 @@
+
 import { getPost } from '@/src/lib/cms';
 import type { Post } from '@/src/types/post';
 import { notFound } from 'next/navigation';
+
 
 function markdownToHtml(md: string) {
   return md
@@ -13,10 +15,12 @@ function markdownToHtml(md: string) {
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+
   const post: Post | undefined = await getPost(params.slug);
   if (!post) {
     notFound();
   }
+
   return (
     <main className="container">
       <h1>{post.title}</h1>

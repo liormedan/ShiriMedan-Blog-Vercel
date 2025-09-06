@@ -1,6 +1,8 @@
 import Link from 'next/link';
+
 import { getPosts } from '@/src/lib/cms';
 import type { Post } from '@/src/types/post';
+
 
 export default async function BlogPage() {
   const posts: Post[] = await getPosts();
