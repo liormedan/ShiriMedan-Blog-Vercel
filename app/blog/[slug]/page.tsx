@@ -1,13 +1,4 @@
-interface Post {
-  id: number;
-  title: string;
-  body: string;
-}
-
-async function getPost(id: string): Promise<Post> {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
-  return res.json();
-}
+import { getPost, type Post } from '@/src/lib/posts';
 
 function markdownToHtml(md: string) {
   return md
@@ -20,7 +11,7 @@ function markdownToHtml(md: string) {
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = await getPost(params.slug);
+  const post: Post = await getPost(params.slug);
   return (
     <main className="container">
       <h1>{post.title}</h1>

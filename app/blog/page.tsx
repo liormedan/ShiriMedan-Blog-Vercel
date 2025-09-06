@@ -1,15 +1,5 @@
 import Link from 'next/link';
-
-interface Post {
-  id: number;
-  title: string;
-  body: string;
-}
-
-async function getPosts(): Promise<Post[]> {
-  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
-  return res.json();
-}
+import { getPosts, type Post } from '@/src/lib/posts';
 
 export default async function BlogPage() {
   const posts = await getPosts();
