@@ -28,6 +28,7 @@ export default function Header() {
             <span className="h-2 w-2 rounded-full bg-brand-magenta" />
           </span>
           <a href="/editor" className="text-brand-primary hover:underline">Editor</a>
+          <a href="/admin" className="hover:underline">Admin</a>
           {!loading && (
             user ? (
               <>
