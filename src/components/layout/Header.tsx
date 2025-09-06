@@ -1,7 +1,9 @@
 "use client";
 import Image from 'next/image';
+import { useAuth } from '@/src/providers/FirebaseAuthProvider';
 
 export default function Header() {
+  const { user, loading, signInWithGoogle, signOut } = useAuth();
   return (
     <header className="border-b border-brand-primary/15 bg-white/80 backdrop-blur">
       <div className="container flex items-center justify-between py-3">
@@ -26,10 +28,18 @@ export default function Header() {
             <span className="h-2 w-2 rounded-full bg-brand-magenta" />
           </span>
           <a href="/editor" className="text-brand-primary hover:underline">Editor</a>
-          <a href="#" className="hover:underline">About</a>
+          {!loading && (
+            user ? (
+              <>
+                <span className="text-brand-primary">{user.displayName || user.email}</span>
+                <button onClick={() => signOut()} className="hover:underline">Sign out</button>
+              </>
+            ) : (
+              <button onClick={() => signInWithGoogle()} className="hover:underline">Sign in</button>
+            )
+          )}
         </nav>
       </div>
     </header>
   );
 }
-

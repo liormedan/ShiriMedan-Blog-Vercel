@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Providers } from '@/src/providers/ReduxProvider';
+import { FirebaseAuthProvider } from '@/src/providers/FirebaseAuthProvider';
 import Header from '@/src/components/layout/Header';
 import Footer from '@/src/components/layout/Footer';
 
@@ -14,11 +15,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="he" dir="rtl">
       <body className="bg-brand-bg text-brand-text">
         <Providers>
-          <Header />
-          <div className="container py-6">
-            {children}
-          </div>
-          <Footer />
+          <FirebaseAuthProvider>
+            <Header />
+            <div className="container py-6">
+              {children}
+            </div>
+            <Footer />
+          </FirebaseAuthProvider>
         </Providers>
       </body>
     </html>
