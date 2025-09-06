@@ -1,7 +1,10 @@
 "use client";
 import Image from 'next/image';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 export default function Header() {
+  const { data: session } = useSession();
+
   return (
     <header className="border-b border-brand-primary/15 bg-white/80 backdrop-blur">
       <div className="container flex items-center justify-between py-3">
@@ -19,6 +22,14 @@ export default function Header() {
           </span>
           <a href="/editor" className="text-brand-primary hover:underline">עורך</a>
           <a href="#" className="hover:underline">אודות</a>
+          {session ? (
+            <>
+              <span>{session.user?.name}</span>
+              <button onClick={() => signOut()} className="hover:underline">יציאה</button>
+            </>
+          ) : (
+            <button onClick={() => signIn('google')} className="hover:underline">התחברות</button>
+          )}
         </nav>
       </div>
     </header>
