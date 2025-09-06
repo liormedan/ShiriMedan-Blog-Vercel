@@ -1,4 +1,8 @@
-import { getPost, type Post } from '@/src/lib/posts';
+
+import { getPost } from '@/src/lib/cms';
+import type { Post } from '@/src/types/post';
+import { notFound } from 'next/navigation';
+
 
 function markdownToHtml(md: string) {
   return md
@@ -11,11 +15,16 @@ function markdownToHtml(md: string) {
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post: Post = await getPost(params.slug);
+
+  const post: Post | undefined = await getPost(params.slug);
+  if (!post) {
+    notFound();
+  }
+
   return (
     <main className="container">
       <h1>{post.title}</h1>
-      <article dangerouslySetInnerHTML={{ __html: markdownToHtml(post.body) }} />
+      <article dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }} />
     </main>
   );
 }
