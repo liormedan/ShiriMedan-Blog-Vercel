@@ -1,4 +1,6 @@
+
 import type { Metadata } from 'next';
+
 
 interface Post {
   id: number;
@@ -6,10 +8,7 @@ interface Post {
   body: string;
 }
 
-async function getPost(id: string): Promise<Post> {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`);
-  return res.json();
-}
+
 
 export async function generateMetadata({
   params,
@@ -43,12 +42,20 @@ function markdownToHtml(md: string) {
     .replace(/\n/gim, '<br />');
 }
 
+
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = await getPost(params.slug);
+
+  const post: Post | undefined = await getPost(params.slug);
+  if (!post) {
+    notFound();
+  }
+
   return (
     <main className="container">
       <h1>{post.title}</h1>
-      <article dangerouslySetInnerHTML={{ __html: markdownToHtml(post.body) }} />
+
+      <article dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(marked.parse(post.body)) }} />
+
     </main>
   );
 }
