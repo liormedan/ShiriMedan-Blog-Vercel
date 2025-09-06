@@ -31,7 +31,10 @@ declare namespace __next_route_internal_types__ {
   type StaticRoutes = 
     | `/`
     | `/editor`
+    | `/api/check-slug`
+    | `/auth/signin`
     | `/blog`
+    | `/rss.xml`
   type DynamicRoutes<T extends string = string> = 
     | `/blog/${SafeSlug<T>}`
 

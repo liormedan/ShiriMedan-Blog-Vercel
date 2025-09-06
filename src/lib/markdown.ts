@@ -16,13 +16,16 @@ export function markdownToHtml(md: string): string {
   // Normalize line endings
   let text = md.replace(/\r\n?/g, '\n');
 
+  // Escape all HTML first to avoid injection; subsequent markup inserts trusted tags.
+  text = escapeHtml(text);
+
   // Fenced code blocks ```
   text = text.replace(/```([\s\S]*?)```/g, (_, code) => {
-    return `<pre><code>${escapeHtml(code.trim())}</code></pre>`;
+    return `<pre><code>${code.trim()}</code></pre>`; // already escaped globally
   });
 
   // Inline code `code`
-  text = text.replace(/`([^`]+?)`/g, (_, code) => `<code>${escapeHtml(code)}</code>`);
+  text = text.replace(/`([^`]+?)`/g, (_, code) => `<code>${code}</code>`);
 
   // Bold **text**
   text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
@@ -31,7 +34,11 @@ export function markdownToHtml(md: string): string {
   text = text.replace(/(^|[^*])\*([^*]+)\*(?!\*)/g, '$1<em>$2</em>');
 
   // Links [text](url)
-  text = text.replace(/\[([^\]]+)\]\(([^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  text = text.replace(/\[([^\]]+)\]\(([^\s)]+)\)/g, (m, label, url) => {
+    // Basic URL safety: allow only http(s) and root-relative links
+    const safe = /^(https?:\/\/|\/)/i.test(url) ? url : '#';
+    return `<a href="${safe}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+  });
 
   // Headings
   text = text.replace(/^###\s+(.+)$/gm, '<h3>$1</h3>');
@@ -64,4 +71,3 @@ export function markdownToHtml(md: string): string {
 }
 
 export default markdownToHtml;
-

@@ -1,12 +1,11 @@
 "use client";
 import { Card } from '@/src/components/ui/card';
 import { useAppSelector } from '@/src/store/hooks';
-import DOMPurify from 'dompurify';
 import { markdownToHtml } from '@/src/lib/markdown';
 
 export default function PreviewPane() {
   const { title, body } = useAppSelector((s) => s.editor);
-  const html = DOMPurify.sanitize(markdownToHtml(body || ''));
+  const html = markdownToHtml(body || '');
 
   return (
     <Card>
