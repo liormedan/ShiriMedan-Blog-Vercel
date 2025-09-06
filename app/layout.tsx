@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import '@radix-ui/themes/styles.css';
 import { Providers } from '@/src/providers/ReduxProvider';
 import Header from '@/src/components/layout/Header';
 import Footer from '@/src/components/layout/Footer';
