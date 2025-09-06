@@ -1,4 +1,10 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'הבלוג',
+  description: 'רשימת הפוסטים האחרונים',
+};
 
 import { getPosts } from '@/src/lib/cms';
 import type { Post } from '@/src/types/post';
